@@ -1,0 +1,8 @@
+
+rich
+langgraph
+langchain_core
+langchain_community
+langchain_experimental
+langchain_mistralai
+#langchain_groq

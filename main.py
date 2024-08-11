@@ -5,13 +5,13 @@ from langchain_core.tools import tool
 from langchain_community.tools import ShellTool
 from langchain_experimental.tools import PythonREPLTool
 from langchain_mistralai import ChatMistralAI
-from langchain_groq import ChatGroq
+#from langchain_groq import ChatGroq
 
 model = ChatMistralAI(model='mistral-large-latest')
 #model = ChatGroq(model='llama-3.1-8b-instant')
 
-#shell_tool = ShellTool(ask_human_input=True)
-shell_tool = ShellTool()
+shell_tool = ShellTool(ask_human_input=True)
+# shell_tool = ShellTool()
 # python_tool = PythonREPLTool(ask_human_input=True)
 tools = [shell_tool] #, python_tool]
 
