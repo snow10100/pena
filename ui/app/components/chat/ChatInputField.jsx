@@ -3,7 +3,7 @@ import { FaArrowUpLong } from "react-icons/fa6";
 
 export default function ChatInputField() {
   return (
-    <div className="flex flex-row w-full p-2 bg-slate-100 rounded-lg">
+    <div className="flex flex-row w-full p-2 bg-slate-100 rounded-lg dark:bg-gray-800 dark:text-white">
       <input
         className="bg-transparent text-lg mx-2 w-full rounded-full outline-none"
         type="text"
