@@ -13,7 +13,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={inter.className + "bg-light-background dark:bg-dark-background"}>
-        <div className="p-4 sm:ml-64">
+        <div className="p-4 sm:ml-[20rem]">
           <SideBar />
           {children}
         </div>
