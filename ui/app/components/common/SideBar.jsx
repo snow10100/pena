@@ -6,11 +6,10 @@ import GradientBtn from '../buttons/GradientBtn';
 import SideBarBtn from '../buttons/SideBarBtn';
 import { FiMoon, FiSun, FiSettings, FiUser } from 'react-icons/fi';
 
-
 function SideBar() {
   const [showSidebar, setShowSidebar] = useState(true);
-  const [isDarkMode, setIsDarkMode] = useState(false);
-  // Update the dark mode class on the HTML element
+  const [isDarkMode, setIsDarkMode] = useState(true);
+
   useEffect(() => {
     if (isDarkMode) {
       document.documentElement.classList.add('dark');
