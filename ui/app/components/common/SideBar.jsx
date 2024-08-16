@@ -144,7 +144,7 @@ function SideBar() {
             <li>
             </li>
             <li className='text-center'>
-              <GradientBtn text={"Generate a report"} />
+              <GradientBtn text={"Generate a Report"} />
             </li>
           </ul>
           {/* The very end of the side bar would contain settings like a button for theme (dark/white), a button for settins (gear shape), and lastly a button to sign in and out which willl be disabled */}
