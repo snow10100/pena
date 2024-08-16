@@ -1,35 +1,54 @@
 'use client';
 import { useState } from "react";
+import useSWR from 'swr';
+import axios from 'axios';
 import ChatInputField from "./components/chat/ChatInputField";
 import UserChatBubble from "./components/chat/UserChatBubble";
 import BotChatBubble from "./components/chat/BotChatBubble";
+import { RemoteRunnable } from "@langchain/core/runnables/remote";
+
+
+
+// const fetcher = url => axios.post(url).then(res => res.data);
 
 export default function Home() {
-  const [userMessages, setUserMessages] = useState([]);
-  const handleSubmit = (message) => {
-    setUserMessages([...userMessages, message]);
-    // we should also send the message to the server
-    // we should also get a response from the server and added it to the messages
-  }
+  const [messages, setMessages] = useState([]);
+
+  const handleSubmit = async (message) => {
+    setMessages([...messages, { message, sender: "user" }]);
+    const index = messages.length - 1;
+    const chain = new RemoteRunnable({
+      url: `http://localhost:8000/ai/`,
+    });
+    try {
+      console.log(messages)
+      console.log('sending message:', messages[index].message);
+      const response = await chain.invoke({
+        task: messages[index].message,
+      });
+      const content = response.content
+      setMessages([...messages, { content, sender: "agent" }]);
+      console.log(messages)
+      console.log('response:', content);
+    } catch (error) {
+      console.error('Error sending message:', error);
+    }
+  };
+
   return (
     <main className="h-[90vh] sm:h-[95vh]">
       <div className="grid h-full grid-rows-2">
         <div className="overflow-y-auto">
-          {/* This is the chat content area */}
-          {/* <ChatContent /> */}
-          {/* <UserChatBubble> Lorem ipsum dolor sit amet consectetur adipisicing elit. Eveniet provident nam, soluta optio, debitis, animi illum nesciunt dolorum quidem atque autem expedita dolorem earum quibusdam officia aspernatur perspiciatis id ex? </UserChatBubble> */}
           <div className="flex flex-col gap-2">
-            {userMessages.map((message, index) => (
-              <>
-                <UserChatBubble key={index}>{message}</UserChatBubble>
-                <BotChatBubble key={index}>{message}</BotChatBubble>
-              </>
+            {messages.map((message, index) => (
+              message.sender === "user" ?
+                <UserChatBubble key={`user-${index}`}>{message.message}</UserChatBubble> :
+                <BotChatBubble key={`bot-${index}`}>{message.message}</BotChatBubble>
+
             ))}
           </div>
-
         </div>
         <div className="self-end">
-          {/* This is the chat input field */}
           <ChatInputField handleSubmit={handleSubmit} />
         </div>
       </div>
