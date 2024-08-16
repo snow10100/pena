@@ -1,6 +1,5 @@
 const GradientBtn = ({ text, onClick = null }) => {
   const buttonStyle = {
-    background: 'linear-gradient(to right, #5976F9, #04A5D3)',
     border: 'none',
     color: '#fff',
     padding: '10px 20px',
@@ -9,7 +8,7 @@ const GradientBtn = ({ text, onClick = null }) => {
   };
 
   return (
-    <button style={buttonStyle}>
+    <button style={buttonStyle} className="hover:opacity-75 bg-custom-gradient">
       {text}
     </button>
   );
