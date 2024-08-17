@@ -9,61 +9,35 @@ import { RemoteRunnable } from "@langchain/core/runnables/remote";
 
 // const fetcher = url => axios.post(url).then(res => res.data);
 
+const chain = new RemoteRunnable({
+  url: `http://localhost:8000/ai/`,
+});
+
+
 export default function Home() {
   const [messages, setMessages] = useState([]);
+  const [tempMessage, setTempMessage] = useState("");
 
   const handleSubmit = async (message) => {
-    setMessages([...messages, { message, sender: "user" }]);
-    const index = messages.length - 1;
-    const chain = new RemoteRunnable({
-      url: `http://localhost:8000/ai/`,
-    });
+    if (!message) {
+      return;
+    }
+    const messageHistory = [...messages, { message: message, sender: "user" }];
+    setMessages(messageHistory);
     try {
-      console.log(messages);
-      console.log("sending message:", messages[index].message);
-      const response = await chain.invoke({
-        task: messages[index].message,
-      });
-      const content = response.content;
-      setMessages([...messages, { message: content, sender: "agent" }]);
-      console.log(messages);
-      console.log("response:", content);
+      const response = await chain.stream({ task: message });
+      var bot_message = '';
+      for await (const chunk of response) {
+        bot_message += chunk.content;
+        setTempMessage(bot_message);
+      }
+      setTempMessage('');
+      setMessages([...messageHistory, { message: bot_message, sender: "agent" }]);
     } catch (error) {
       console.error("Error sending message:", error);
     }
+    console.log(messages);
   };
-
-  const markdownContent = `
-  # Hello World
- 
-  
-# h1 Heading 
-
-**This is bold text**
-
-__This is bold text__
-
-*This is italic text*
-
-_This is italic text_
-
-~~Strikethrough~~
-
-  This is a code block:
-
-  \`\`\`javascript
-  console.log('Hello, world!');
-  \`\`\`
-
-
-  ## Tables
- 
-  | Syntax | Description |
-  | ----------- | ----------- |
-  | Header | Title |
-  | Paragraph | Text |
-  
-  `;
 
   return (
     <main className="h-[85vh] sm:h-[90vh]">
@@ -81,7 +55,7 @@ _This is italic text_
                 </BotChatBubble>
               )
             )}
-            <BotChatBubble>{markdownContent}</BotChatBubble>
+            {tempMessage && <BotChatBubble>{tempMessage}</BotChatBubble>}
           </div>
         </div>
       </div>

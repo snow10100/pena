@@ -8,7 +8,7 @@ export default function ChatInputField({ handleSubmit }) {
 
   const handleChange = (e) => {
     setUserPrompt(e.target.value);
-    console.log("writing message", userPrompt);
+    // console.log("writing message", userPrompt);
   };
 
   const _handleSubmit = (message) => {
