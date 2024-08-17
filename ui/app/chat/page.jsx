@@ -2,9 +2,9 @@
 import { useState } from "react";
 import useSWR from "swr";
 import axios from "axios";
-import ChatInputField from "./components/chat/ChatInputField";
-import UserChatBubble from "./components/chat/UserChatBubble";
-import BotChatBubble from "./components/chat/BotChatBubble";
+import ChatInputField from "../../components/chat/ChatInputField";
+import UserChatBubble from "../../components/chat/UserChatBubble";
+import BotChatBubble from "../../components/chat/BotChatBubble";
 import { RemoteRunnable } from "@langchain/core/runnables/remote";
 
 // const fetcher = url => axios.post(url).then(res => res.data);

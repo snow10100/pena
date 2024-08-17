@@ -6,7 +6,6 @@ import {
 } from "react-syntax-highlighter/dist/esm/styles/prism";
 import remarkGfm from "remark-gfm";
 import { useEffect, useState } from "react";
-// icon
 import { FaRobot } from "react-icons/fa";
 export default function BotChatBubble({ children }) {
   const [codeStyle, setCodeStyle] = useState(nightOwl);
