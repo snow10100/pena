@@ -9,7 +9,7 @@ from langchain_experimental.tools import PythonREPLTool
 # from langchain_mistralai import ChatMistralAI
 from langchain_anthropic import ChatAnthropic
 from langchain_core.prompts import ChatPromptTemplate
-from langchain_groq import ChatGroq
+# from langchain_groq import ChatGroq
 from langserve import add_routes
 
 from fastapi.middleware.cors import CORSMiddleware
@@ -27,10 +27,10 @@ human_input = HumanInputRun()
 # python_tool = PythonREPLTool(ask_human_input=True)
 tools = [shell_tool, human_input] #, python_tool]
 
-system_message = 'you can run bash commands using shell_tool, you can ask for human input using human_input' #, you are helping students learn how to pentest metasploitable 2'# or python code using python_tool'
-# app = create_react_agent(model, tools, state_modifier=system_message)
+system_message = 'you can run bash commands using shell_tool, you can ask for human input using human_input, you are helping students learn how to pentest metasploitable 2'# or python code using python_tool'
+agent = create_react_agent(model, tools, state_modifier=system_message)
 
-prompt = ChatPromptTemplate.from_template('tell me about a {task} tip')
+prompt = ChatPromptTemplate.from_template('perform the following task: {task}')
 # print('[red]what do you want to do?[/red]', end=' ')
 # query = input()
 
@@ -54,7 +54,7 @@ app.add_middleware(
 
 add_routes(
     app,
-    prompt | model,
+    prompt | agent,
     path="/ai",
 )
 

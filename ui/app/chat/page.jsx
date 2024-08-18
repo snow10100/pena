@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useSWR from "swr";
 import axios from "axios";
 import ChatInputField from "../../components/chat/ChatInputField";
@@ -18,6 +18,12 @@ export default function Home() {
   const [messages, setMessages] = useState([]);
   const [tempMessage, setTempMessage] = useState("");
 
+  useEffect(
+    function doNothing(params) {
+      return;
+    }
+  , [tempMessage])
+
   const handleSubmit = async (message) => {
     if (!message) {
       return;
@@ -28,15 +34,18 @@ export default function Home() {
       const response = await chain.stream({ task: message });
       var bot_message = '';
       for await (const chunk of response) {
-        bot_message += chunk.content;
+        const json_chunk = JSON.stringify(chunk)
+        console.log()
+        const obj = JSON.parse(json_chunk);
+        bot_message +=  obj.agent?.kwargs?.messages[0]?.kwargs?.content
         setTempMessage(bot_message);
+        console.log("temp: ", tempMessage);
       }
       setTempMessage('');
       setMessages([...messageHistory, { message: bot_message, sender: "agent" }]);
     } catch (error) {
       console.error("Error sending message:", error);
     }
-    console.log(messages);
   };
 
   return (
