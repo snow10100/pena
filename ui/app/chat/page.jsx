@@ -108,7 +108,7 @@ export default function Home() {
               )
             )}
             {tempMessage && <BotChatBubble>{tempMessage}</BotChatBubble>}
-            {/* <BotChatBubble>{markdownContent}</BotChatBubble> */}
+            <BotChatBubble>{markdownContent}</BotChatBubble>
           </div>
         </div>
       </div>

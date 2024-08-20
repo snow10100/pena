@@ -18,7 +18,6 @@ export default function Page() {
         task: task,
       };
       router.push(`/chat?target=${queryParams.target}&task=${queryParams.task}`);
-
     }
   };
 

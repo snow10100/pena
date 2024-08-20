@@ -6,22 +6,15 @@ import GradientBtn from '../buttons/GradientBtn';
 import SideBarBtn from '../buttons/SideBarBtn';
 import { FiMoon, FiSun, FiSettings, FiUser } from 'react-icons/fi';
 import { HiMiniCommandLine } from "react-icons/hi2";
+import { useTheme } from '../../hooks/ThemeContext';
+import Image from 'next/image';
+
 
 function SideBar() {
   const [showSidebar, setShowSidebar] = useState(true);
-  const [isDarkMode, setIsDarkMode] = useState(true);
+  const { theme, toggleTheme } = useTheme();
+  const toggleSidebar = () => setShowSidebar(!showSidebar);
 
-  useEffect(() => {
-    if (isDarkMode) {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
-  }, [isDarkMode]);
-  const toggleDarkMode = () => {
-    setIsDarkMode(!isDarkMode);
-  };
-  const toggleSidebar = () => { return; };
 
   return (
     <div>
@@ -54,7 +47,7 @@ function SideBar() {
         className="fixed top-0 left-0 z-40 w-[20rem] h-screen transition-transform -translate-x-full sm:translate-x-0"
         aria-label="Sidebar"
       >
-        <div className="h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800">
+        <div className="h-full px-3 py-4 overflow-y-auto bg-[#F1F4FA] dark:bg-gray-800">
           {/* close button */}
           {/* <div className='w-full text-left '>
             <button
@@ -64,6 +57,13 @@ function SideBar() {
             >x</button>
           </div> */}
           <ul className="space-y-2 font-medium">
+            <li className='logo '>
+              <Image src='/logo.svg' alt='logo' width={0}
+                height={0}
+                sizes="100vw"
+                style={{ width: '100%', height: 'auto' }}
+              />
+            </li>
             <li className='flex'>
               <SideBarItem text={"Model status: "} icon={""} className='text-nowrap m-0' />
               <span className=''>
@@ -98,8 +98,8 @@ function SideBar() {
           {/* theme btn */}
           <div className="absolute bottom-5 left-0 right-0 flex space-x-4 items-center justify-center">
             <SideBarBtn
-              icon={isDarkMode ? <FiSun /> : <FiMoon />}
-              onClick={toggleDarkMode}
+              icon={theme == 'dark' ? <FiSun /> : <FiMoon />}
+              onClick={toggleTheme}
             />
             <SideBarBtn
               icon={<FiSettings />}

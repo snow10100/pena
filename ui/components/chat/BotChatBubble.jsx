@@ -7,36 +7,18 @@ import {
 import remarkGfm from "remark-gfm";
 import { useEffect, useState } from "react";
 import { FaRobot } from "react-icons/fa";
-export default function BotChatBubble({ children }) {
-  const [codeStyle, setCodeStyle] = useState(nightOwl);
-  const [theme, setTheme] = useState(
-    typeof window !== "undefined" ? localStorage.getItem("theme") : null
-  );
+import { useCookie } from "../../hooks/useCookie";
+import { useTheme } from "../../hooks/ThemeContext";
+export default function BotChatBubble({ children, error = false }) {
+  const [codeStyle, setCodeStyle] = useState(oneLight); // Default to light theme
 
-  // TODO: Change theme of markdown based on dark or light mode
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      const handleStorageChange = () => {
-        setTheme(localStorage.getItem("theme"));
-      };
-
-      window.addEventListener("storage", handleStorageChange);
-
-      // Cleanup
-      return () => {
-        window.removeEventListener("storage", handleStorageChange);
-      };
-    }
-  }, []);
+  const { theme } = useTheme();
 
   useEffect(() => {
-    if (theme === "dark") {
-      setCodeStyle(nightOwl);
-    } else if (theme === "light") {
-      console.log("oneLight");
-      setCodeStyle(oneLight);
-    }
+    console.log('Theme changed:', theme); // For debugging
+    setCodeStyle(theme === 'dark' ? nightOwl : oneLight);
   }, [theme]);
+
 
   return (
     <div>
@@ -44,9 +26,9 @@ export default function BotChatBubble({ children }) {
         <FaRobot className=" text-gray-500" />
         <span className="text-gray-500">Bot</span>
       </div>
-      <div className="p-4 mr-auto dark:bg-gray-800 dark:text-slate-300 rounded-md shadow-lg max-w-[90%]">
+      <div className="p-4 mr-auto bg-[#F1F4FA] dark:bg-gray-800 dark:text-slate-300 rounded-md shadow-md max-w-[90%]">
         <ReactMarkdown
-          className="text-white"
+          className="dark:text-white"
           remarkPlugins={[remarkGfm]}
           components={{
             code({ node, inline, className, children, ...props }) {

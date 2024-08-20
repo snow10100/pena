@@ -1,3 +1,4 @@
+import { ThemeProvider } from '../hooks/ThemeContext'; // Adjust the path if necessary
 import "../styles/globals.css";
 
 
@@ -10,11 +11,13 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body
-        className={ 
-          " bg-light-background dark:bg-dark-background"
+        className={
+          "text-[#004aad] dark:text-whtie bg-[#FFF] dark:bg-dark-background"
         }
       >
-        {children}
+        <ThemeProvider>
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   );
