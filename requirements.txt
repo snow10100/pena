@@ -8,3 +8,4 @@ langchain_community
 langchain_experimental
 langchain_anthropic
 langserve
+dotenv

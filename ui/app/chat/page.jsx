@@ -12,17 +12,41 @@ import { RemoteRunnable } from "@langchain/core/runnables/remote";
 const chain = new RemoteRunnable({
   url: `http://localhost:8000/ai/`,
 });
+const markdownContent = `
+  # Hello World
+ 
+  
+# h1 Heading 
+**This is bold text**
+__This is bold text__
+*This is italic text*
+_This is italic text_
+~~Strikethrough~~
+  This is a code block:
+  \`\`\`cli
+  ls
+  \`\`\`
+  ## Tables
+ 
+  | Syntax | Description |
+  | ----------- | ----------- |
+  | Header | Title |
+  | Paragraph | Text |
+  
+  `;
 
+// We should modify the prompt to include the output "always" 
 
 export default function Home() {
   const [messages, setMessages] = useState([]);
   const [tempMessage, setTempMessage] = useState("");
+  const [runningCommands, setRunningCommands] = useState([]);
 
   useEffect(
     function doNothing(params) {
       return;
     }
-  , [tempMessage])
+    , [tempMessage])
 
   const handleSubmit = async (message) => {
     if (!message) {
@@ -37,10 +61,15 @@ export default function Home() {
         const json_chunk = JSON.stringify(chunk)
         console.log()
         const obj = JSON.parse(json_chunk);
-        bot_message +=  obj.agent?.kwargs?.messages[0]?.kwargs?.content
-        setTempMessage(bot_message);
-        console.log("temp: ", tempMessage);
+        if (typeof obj.agent?.kwargs?.messages[0]?.kwargs?.content == 'string' || obj.agent?.kwargs?.messages[0]?.kwargs?.content instanceof String) {
+          bot_message += obj.agent?.kwargs?.messages[0]?.kwargs?.content
+          setTempMessage(bot_message);
+          console.log("temp: ", tempMessage);
+        }
       }
+      const regex = /```.*```/s;
+      const matches = tempMessage.match(regex);
+      console.log("matches: ", matches);
       setTempMessage('');
       setMessages([...messageHistory, { message: bot_message, sender: "agent" }]);
     } catch (error) {
@@ -51,7 +80,7 @@ export default function Home() {
   return (
     <main className="h-[85vh] sm:h-[90vh]">
       <div className="grid h-full grid-rows-[1fr, auto]">
-        <div className=" overflow-y-auto">
+        <div className="overflow-y-auto mb-2">
           <div className="flex flex-col gap-3">
             {messages.map((message, index) =>
               message.sender === "user" ? (
@@ -65,6 +94,7 @@ export default function Home() {
               )
             )}
             {tempMessage && <BotChatBubble>{tempMessage}</BotChatBubble>}
+            {/* <BotChatBubble>{markdownContent}</BotChatBubble> */}
           </div>
         </div>
       </div>
