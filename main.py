@@ -1,4 +1,9 @@
 #!/usr/bin/env python
+
+import os
+from dotenv import load_dotenv, find_dotenv
+load_dotenv()
+
 from fastapi import FastAPI
 from rich import print
 import os
@@ -25,6 +30,7 @@ from lg_pentest.pentest_agent.sup_agent import graph
 # model = ChatGroq(model='llama-3.1-8b-instant')
 model = ChatAnthropic(
     model="claude-3-haiku-20240307",
+    api_key=os.getenv("ANTHROPIC_API_KEY"),
 )  # It won't work with langgraph studio, it expects the keys to be in .env, otherwise it ignores them
 
 
