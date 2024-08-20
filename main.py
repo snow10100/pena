@@ -16,6 +16,9 @@ from langserve import add_routes
 
 from fastapi.middleware.cors import CORSMiddleware
 
+
+from lg_pentest.pentest_agent.sup_agent import graph
+
 # Set all CORS enabled origins
 
 # model = ChatMistralAI(model='mistral-large-latest')
@@ -71,6 +74,12 @@ add_routes(
     app,
     prompt | agent,
     path="/ai",
+)
+
+add_routes(
+    app,
+    prompt | graph,
+    path="/graph",
 )
 
 if __name__ == "__main__":

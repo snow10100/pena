@@ -11,7 +11,7 @@ import { useSearchParams } from "next/navigation";
 // const fetcher = url => axios.post(url).then(res => res.data);
 
 const chain = new RemoteRunnable({
-  url: `http://localhost:8000/ai/`,
+  url: `http://localhost:8000/graph/`,
 });
 const markdownContent = `
   # Hello World
