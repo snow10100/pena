@@ -6,6 +6,7 @@ import ChatInputField from "../../components/chat/ChatInputField";
 import UserChatBubble from "../../components/chat/UserChatBubble";
 import BotChatBubble from "../../components/chat/BotChatBubble";
 import { RemoteRunnable } from "@langchain/core/runnables/remote";
+import { useSearchParams } from "next/navigation";
 
 // const fetcher = url => axios.post(url).then(res => res.data);
 
@@ -35,12 +36,25 @@ _This is italic text_
   
   `;
 
-// We should modify the prompt to include the output "always" 
+
 
 export default function Home() {
   const [messages, setMessages] = useState([]);
   const [tempMessage, setTempMessage] = useState("");
   const [runningCommands, setRunningCommands] = useState([]);
+  const searchParams = useSearchParams();
+  const target = searchParams.get('target');
+  const task = searchParams.get('task');
+
+  useEffect(() => {
+    if (target || task) {
+      let message = `Perform this task: ${task}`;
+      if (target) {
+        message += ` on this target: ${target}`;
+      }
+      handleSubmit(message);
+    }
+  }, [target, task]);
 
   useEffect(
     function doNothing(params) {
