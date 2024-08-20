@@ -1,4 +1,3 @@
-
 rich
 fastapi
 uvicorn
@@ -8,4 +7,5 @@ langchain_community
 langchain_experimental
 langchain_anthropic
 langserve
-dotenv
+python-dotenv
+sse_starlette
