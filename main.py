@@ -11,6 +11,7 @@ from langgraph.prebuilt import create_react_agent
 from langchain_core.tools import tool
 from langchain_community.tools import ShellTool, HumanInputRun
 from langchain_experimental.tools import PythonREPLTool
+from api.routes import router
 
 # from langchain_mistralai import ChatMistralAI
 from langchain_anthropic import ChatAnthropic
@@ -87,6 +88,7 @@ add_routes(
     prompt | graph,
     path="/graph",
 )
+app.include_router(router)
 
 if __name__ == "__main__":
     import uvicorn
