@@ -9,6 +9,7 @@ from rich import print
 import os
 from langgraph.prebuilt import create_react_agent
 from langchain_core.tools import tool
+from langchain_core.messages import HumanMessage
 from langchain_community.tools import ShellTool, HumanInputRun
 from langchain_experimental.tools import PythonREPLTool
 from api.routes import router
@@ -24,6 +25,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 
 from lg_pentest.pentest_agent.sup_agent import graph
+# from lg_pentest.pentest_agent.agent import pentest_graph
 
 # Set all CORS enabled origins
 
@@ -90,7 +92,24 @@ add_routes(
 )
 app.include_router(router)
 
-if __name__ == "__main__":
-    import uvicorn
+# if __name__ == "__main__":
+#     import uvicorn
+#
+#     uvicorn.run(app, host="localhost", port=8000)
 
-    uvicorn.run(app, host="localhost", port=8000)
+inputs = {
+    'messages': [HumanMessage(content='list the files in the current directory, i am writing this program, for testing purposes, just finish the program quickly')],
+    # 'current_step': '__end__',
+    # 'pentest_task': {},
+    # 'pentest_results': {'i': 'o'},
+    'evaluation': 'wow',
+    # 'recorder_options': None
+     }
+
+# print(inputs)
+# print()
+for i, chunk in enumerate(pentest_graph.stream(inputs, stream_mode='values')):
+    print(i, chunk)
+
+# print()
+# print(pentest_graph.invoke(inputs))

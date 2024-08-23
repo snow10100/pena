@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 
-from api.schemas.request import Prompt_Body
-from api.schemas.response import Report, healthResult
+from schemas.request import Prompt_Body
+from schemas.response import Report, healthResult
 # from pathlib import Path, PurePath
 router = APIRouter()
 
@@ -24,6 +24,7 @@ def generate_report_logic():
 
 
 
+@router.get("/get-status", )
 
 @router.get("/generate-report", response_model=Report, tags=["Report Endpoints"])
 def generate_report():
@@ -37,3 +38,8 @@ def sth(prompt_body: Prompt_Body):
 @router.get("/health-check", response_model=healthResult, tags=["General Endpoints"])
 def health_check():
     return {"response": {"status": "OK"}}
+
+if __name__ == '__main__':
+    import uvicorn
+
+    uvicorn.run(router, host="localhost", port=8000)
