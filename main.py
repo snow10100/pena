@@ -128,6 +128,7 @@ def event_stream(query: str):
     for chunk in pentest_graph.stream(initial_state, stream_mode="updates"):
         for node_name, node_results in chunk.items():
             print(f'{node_name = }')
+            node_results['agent'] = node_name
             print(node_results)
             chunk_messages = node_results.get("messages", [])
             model_status = node_results.get("model_status", [])
