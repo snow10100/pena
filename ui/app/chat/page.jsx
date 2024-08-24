@@ -59,13 +59,16 @@ export default function Home() {
       },
       method: "POST",
       body: JSON.stringify({ query: message }),
-      onmessage(ev) {
-        const str = json.stringify(ev)
-        const obj = json.objectify(str)
-        // console.log(`ev: ${ev}`);
-        // console.log("ev stringfied", obj)
+      onmessage: (ev) => {
+        console.log(ev.event);
+        console.log(ev.data);
+        const obj = JSON.parse(ev.data);
+        console.log(`ev: ${ev}`);
+        console.log("ev stringfied", obj.messages);
         console.log(`Received event: ${ev.data}`); // for debugging purposes
-        setTempMessages((prev) => [...prev, ev.data?.messages?.content]);
+        console.log(`Received event: ${JSON.stringify(obj.messages)}`); // for debugging purposes
+        console.log(`Received content: ${obj.messages[obj.messages.length - 1].content}`); // for debugging purposes
+        setMessages((prev) => [...prev, obj.messages[obj.messages.length - 1]]);
       },
     });
   };
@@ -83,41 +86,49 @@ export default function Home() {
   useEffect(() => {}, [tempMessages])
 
 
+  // const handleSubmit = async (message) => {
+  //   if (!message) {
+  //     return;
+  //   }
+  //   const messageHistory = [...messages, { message: message, sender: "user" }];
+  //   setMessages(messageHistory);
+  //   try {
+  //     fetchData(message);
+  //     const bot_message = tempMessages.join(" ")
+  //     setTempMessages([]);
+  //     setMessages([...messageHistory, { message: bot_message, sender: "agent" }]);
+  //   } catch (error) {
+  //     console.error("Error sending message:", error);
+  //   }
   const handleSubmit = async (message) => {
     if (!message) {
       return;
     }
-    const messageHistory = [...messages, { message: message, sender: "user" }];
-    setMessages(messageHistory);
+    const newMessage = { type: "human", content: message };
+    setMessages(prevMessages => [...prevMessages, newMessage]);
     try {
-      fetchData(message);
-      const bot_message = tempMessages.join(" ")
-      setTempMessages([]);
-      setMessages([...messageHistory, { message: bot_message, sender: "agent" }]);
+      await fetchData(message);
     } catch (error) {
       console.error("Error sending message:", error);
     }
+  }
     
-  };  
-
   return (
     <main className="h-[85vh] sm:h-[90vh]">
       <div className="grid h-full grid-rows-[1fr, auto]">
         <div className="overflow-y-auto mb-2">
           <div className="flex flex-col gap-3">
             {messages.map((message, index) =>
-              message.sender === "user" ? (
+              message.type === "human" ? (
                 <UserChatBubble key={`user-${index}`}>
-                  {message.message}
+                  {message.content}
                 </UserChatBubble>
               ) : (
                 <BotChatBubble key={`bot-${index}`}>
-                  {message.message}
+                  {message.content}
                 </BotChatBubble>
               )
             )}
-            {tempMessages.length > 0 && <BotChatBubble>{tempMessages.join(" ") + " temp"}</BotChatBubble>}
-            {/* <BotChatBubble>{markdownContent}</BotChatBubble> */}
           </div>
         </div>
       </div>
@@ -127,3 +138,4 @@ export default function Home() {
     </main>
   );
 }
+
