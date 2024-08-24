@@ -2,3 +2,5 @@ venv/
 .env
 *.env
 __pycache__/
+pyvenv.cfg
+.DS_Store
