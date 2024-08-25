@@ -135,7 +135,8 @@ def event_stream(query: str):
             for message in chunk_messages:
                 if not message['content']:
                     continue
-                # if isinstance(message, ToolMessage):
+                if isinstance(message, ToolMessage):
+                    continue
                 if message['type'] == 'tool_calls':
                     event_str = "event: tool_event"
                 else:
