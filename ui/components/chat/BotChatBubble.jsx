@@ -9,7 +9,7 @@ import { useEffect, useState } from "react";
 import { FaRobot } from "react-icons/fa";
 import { useCookie } from "../../hooks/useCookie";
 import { useTheme } from "../../hooks/ThemeContext";
-export default function BotChatBubble({ children, error = false }) {
+export default function BotChatBubble({ children, bot_name = "" }) {
   const [codeStyle, setCodeStyle] = useState(oneLight); // Default to light theme
 
   const { theme } = useTheme();
@@ -24,7 +24,7 @@ export default function BotChatBubble({ children, error = false }) {
     <div>
       <div className="flex gap-1 justify-center items-center w-fit">
         <FaRobot className=" text-gray-500" />
-        <span className="text-gray-500">Bot</span>
+        <span className="text-gray-500">Bot | {bot_name} </span>
       </div>
       <div className="p-4 mr-auto bg-[#F1F4FA] dark:bg-gray-800 dark:text-slate-300 rounded-md shadow-md max-w-[90%]">
         <ReactMarkdown
