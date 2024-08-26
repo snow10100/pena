@@ -37,7 +37,7 @@ app.add_middleware(
 def event_stream(query: str):
     # Sends an event every second with data: "Message {i}"
     initial_state = {
-            "messages": [{"type": "human", "content": query}],
+            "messages": [{"role": "user", "content": query}],
             "findings": {
                 "critical": ['4 vulnerabilities'],
                 "medium": ['11 open ports'],
@@ -58,14 +58,12 @@ def event_stream(query: str):
                     continue
                 if isinstance(message, ToolMessage):
                     continue
-                if message['type'] == 'tool_calls':
+                if message['role'] == 'tool_calls':
                     event_str = "event: tool_event"
                 else:
                     event_str = "event: ai_event"
                 # data_str = f"data: {message.content}"
-                # data_str += f"model_status: {model_status}"
                 data_str = 'data: ' + json.dumps(node_results)
-                # print(f"{event_str}\n{data_str}\n\n")
                 yield f"{event_str}\n{data_str}\n\n"
             
 
