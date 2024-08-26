@@ -93,7 +93,7 @@ export default function Home() {
         // get the command that are running
         const runningCommand = obj.command;
         if (runningCommand) {
-          setModelCommands([...modelCommands, runningCommand]);
+          setModelCommands([runningCommand]);
         }
 
         if (obj.agent == "tools_node") {
