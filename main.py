@@ -122,6 +122,11 @@ def event_stream(query: str):
             # "messages": [HumanMessage(content=query)],
             "messages": [{"type": "human", "content": query}],
             # "current_step": "supervisor",
+            "findings": {
+                "critical": ['4 vulnerabilities'],
+                "medium": ['11 open ports'],
+                },
+            "command": "nmap -sV -sC -p- -oN metasploitable2_scan.txt 192.168.100.231"
             "model_status": "scanning",
             "evaluation": "wow",
             }
