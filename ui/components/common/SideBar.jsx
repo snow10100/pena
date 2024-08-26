@@ -8,12 +8,14 @@ import { FiMoon, FiSun, FiSettings, FiUser } from 'react-icons/fi';
 import { HiMiniCommandLine } from "react-icons/hi2";
 import { useTheme } from '../../hooks/ThemeContext';
 import Image from 'next/image';
-
+import { useModelContext } from '../../hooks/ModelContext';
+import ModelStatus from './ModelStatus';
 
 function SideBar() {
   const [showSidebar, setShowSidebar] = useState(true);
   const { theme, toggleTheme } = useTheme();
   const toggleSidebar = () => setShowSidebar(!showSidebar);
+  const { modelStatus, setModelStatus, modelSummary, setModelSummary } = useModelContext();
 
 
   return (
@@ -67,7 +69,7 @@ function SideBar() {
             <li className='flex'>
               <SideBarItem text={"Model status: "} icon={""} className='text-nowrap m-0' />
               <span className=''>
-                <StatIndicator criticality={'medium'} text='scanning...' className={'text-sm'} />
+                <ModelStatus status={modelStatus} />
               </span>
             </li>
             <li>
