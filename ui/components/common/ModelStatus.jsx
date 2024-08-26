@@ -20,7 +20,7 @@ const ModelStatus = ({ status }) => {
     return () => clearInterval(interval);
   }, []);
 
-  const { colorClass, text } = statusConfig.get(status) || { colorClass: 'bg-slate-500 text-white', text: 'idle' };
+  const { colorClass, text } = statusConfig.get(status) || { colorClass: 'dark:bg-slate-400 bg-slate-400 text-white', text: 'idle' };
 
   return (
     <span className={"m-1 px-4 py-2 inline-flex leading-5 rounded-md " + colorClass}>

@@ -78,7 +78,7 @@ function SideBar() {
                 <StatIndicator criticality={'high'} text='vulnerabitlies' number={16} />
               </span>
               <span className='ml-3'>
-                <StatIndicator criticality={'low'} text='open ports' number={4} />
+                <StatIndicator criticality={'medium'} text='open ports' number={4} />
               </span>
               <span className='ml-3'>
                 <StatIndicator criticality={'low'} text='missing encryption' number={8} />
@@ -102,7 +102,7 @@ function SideBar() {
             <SideBarBtn
               icon={theme == 'dark' ? <FiSun /> : <FiMoon />}
               onClick={toggleTheme}
-            />
+            />  
             <SideBarBtn
               icon={<FiSettings />}
               onClick={() => { }}
