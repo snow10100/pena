@@ -6,10 +6,10 @@ const StatIndicator = ({ criticality, text, number = null, className = "" }) => 
       colorClass = 'bg-yellow-50 text-yellow-800';
       break;
     case 'medium':
-      colorClass = 'bg-blue-100 text-blue-800';
+      colorClass = 'dark:bg-[#3A5F8A] bg-blue-100 text-blue-800';
       break;
     case 'high':
-      colorClass = 'bg-red-100 text-red-800';
+      colorClass = 'dark:bg-[#F44336] bg-red-100 text-red-800';
       break;
     case 'critical':
       colorClass = 'bg-red-200 text-red-800';

@@ -157,7 +157,7 @@ export default function Home() {
           </div>
         </div>
       </div>
-      <div className="self-end">
+      <div className="self-end mt-2">
         <ChatInputField handleSubmit={handleSubmit} />
       </div>
     </main>

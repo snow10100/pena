@@ -6,7 +6,7 @@ import {
 } from "react-syntax-highlighter/dist/esm/styles/prism";
 import remarkGfm from "remark-gfm";
 import { useEffect, useState } from "react";
-import { FaRobot } from "react-icons/fa";
+import { FaRobot, FaClipboardList, FaHatCowboy, FaCode } from "react-icons/fa";
 import { useCookie } from "../../hooks/useCookie";
 import { useTheme } from "../../hooks/ThemeContext";
 export default function BotChatBubble({ children, bot_name = "" }) {
@@ -15,16 +15,32 @@ export default function BotChatBubble({ children, bot_name = "" }) {
   const { theme } = useTheme();
 
   useEffect(() => {
-    console.log('Theme changed:', theme); // For debugging
-    setCodeStyle(theme === 'dark' ? nightOwl : oneLight);
+    console.log("Theme changed:", theme); // For debugging
+    setCodeStyle(theme === "dark" ? nightOwl : oneLight);
   }, [theme]);
 
+  const agents_props = {
+    supervisor: {
+      icon: <FaRobot />,
+    },
+    pentester: {
+      icon: <FaHatCowboy />,
+    },
+    evaluator: {
+      icon: <FaClipboardList />,
+    },
+    tools_node: {
+      icon: <FaCode />,
+    },
+  };
 
   return (
     <div>
       <div className="flex gap-1 justify-center items-center w-fit">
-        <FaRobot className=" text-gray-500" />
-        <span className="text-gray-500">Bot | {bot_name} </span>
+        <span className="text-gray-500">
+          {agents_props[bot_name]?.icon || <FaRobot />}
+        </span>
+        <span className="text-gray-500 capitalize">{bot_name}</span>
       </div>
       <div className="p-4 mr-auto bg-[#F1F4FA] dark:bg-gray-800 dark:text-slate-300 rounded-md shadow-md max-w-[90%]">
         <ReactMarkdown

@@ -126,7 +126,7 @@ def event_stream(query: str):
                 "critical": ['4 vulnerabilities'],
                 "medium": ['11 open ports'],
                 },
-            "command": "nmap -sV -sC -p- -oN metasploitable2_scan.txt 192.168.100.231"
+            "command": "nmap -sV -sC -p- -oN metasploitable2_scan.txt 192.168.100.231",
             "model_status": "scanning",
             "evaluation": "wow",
             }
