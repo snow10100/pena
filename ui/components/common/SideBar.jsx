@@ -1,22 +1,29 @@
 "use client";
-import { useState, useEffect } from 'react';
-import SideBarItem from './SideBarItem';
-import StatIndicator from './StatIndicator';
-import GradientBtn from '../buttons/GradientBtn';
-import SideBarBtn from '../buttons/SideBarBtn';
-import { FiMoon, FiSun, FiSettings, FiUser } from 'react-icons/fi';
+import { useState, useEffect } from "react";
+import SideBarItem from "./SideBarItem";
+import StatIndicator from "./StatIndicator";
+import GradientBtn from "../buttons/GradientBtn";
+import SideBarBtn from "../buttons/SideBarBtn";
+import { FiMoon, FiSun, FiSettings, FiEye, FiEyeOff } from "react-icons/fi";
 import { HiMiniCommandLine } from "react-icons/hi2";
-import { useTheme } from '../../hooks/ThemeContext';
-import Image from 'next/image';
-import { useModelContext } from '../../hooks/ModelContext';
-import ModelStatus from './ModelStatus';
+import { useTheme } from "../../hooks/ThemeContext";
+import Image from "next/image";
+import { useModelContext } from "../../hooks/ModelContext";
+import ModelStatus from "./ModelStatus";
 
 function SideBar() {
   const [showSidebar, setShowSidebar] = useState(true);
+  const [showCommands, setShowCommands] = useState(false);
   const { theme, toggleTheme } = useTheme();
   const toggleSidebar = () => setShowSidebar(!showSidebar);
-  const { modelStatus, setModelStatus, modelSummary, setModelSummary } = useModelContext();
-
+  const {
+    modelStatus,
+    setModelStatus,
+    modelSummary,
+    setModelSummary,
+    modelFindings,
+    modelCommands,
+  } = useModelContext();
 
   return (
     <div>
@@ -44,83 +51,114 @@ function SideBar() {
         </svg>
       </button>
 
-      {showSidebar && <aside
-        id="separator-sidebar"
-        className="fixed top-0 left-0 z-40 w-[20rem] h-screen transition-transform -translate-x-full sm:translate-x-0"
-        aria-label="Sidebar"
-      >
-        <div className="h-full px-3 py-4 overflow-y-auto bg-[#F1F4FA] dark:bg-gray-800">
-          {/* close button */}
-          {/* <div className='w-full text-left '>
+      {showSidebar && (
+        <aside
+          id="separator-sidebar"
+          className="fixed top-0 left-0 z-40 w-[20rem] h-screen transition-transform -translate-x-full sm:translate-x-0"
+          aria-label="Sidebar"
+        >
+          <div className="h-full px-3 py-4 overflow-y-auto bg-[#F1F4FA] dark:bg-gray-800">
+            {/* close button */}
+            {/* <div className='w-full text-left '>
             <button
               onClick={toggleSidebar}
               type="button"
               className="sm:hidden rounded-md text-white bg-gray-200 dark:bg-gray-700 aspect-square"
             >x</button>
           </div> */}
-          <ul className="space-y-2 font-medium">
-            <li className='logo '>
-              <Image src='/logo.svg' alt='logo' width={0}
-                height={0}
-                sizes="100vw"
-                style={{ width: '100%', height: 'auto' }}
-              />
-            </li>
-            <li className='flex'>
-              <SideBarItem text={"Model status: "} icon={""} className='text-nowrap m-0' />
-              <span className=''>
-                <ModelStatus status={modelStatus} />
-              </span>
-            </li>
-            <li>
-              <SideBarItem text={"report: "} />
-              <span className='ml-3'>
-                <StatIndicator criticality={'high'} text='vulnerabitlies' number={16} />
-              </span>
-              <span className='ml-3'>
-                <StatIndicator criticality={'low'} text='open ports' number={4} />
-              </span>
-              <span className='ml-3'>
-                <StatIndicator criticality={'low'} text='missing encryption' number={8} />
-              </span>
-            </li>
-            <li>
-              <SideBarItem text={"Running commands"} icon={<HiMiniCommandLine size={24} />} />
-            </li>
-          </ul>
+            <ul className="space-y-2 font-medium">
+              <li className="logo ">
+                <Image
+                  src="/logo.svg"
+                  alt="logo"
+                  width={0}
+                  height={0}
+                  sizes="100vw"
+                  style={{ width: "100%", height: "auto" }}
+                />
+              </li>
+              <li className="flex">
+                <SideBarItem
+                  text={"Model status: "}
+                  icon={""}
+                  className="text-nowrap m-0"
+                />
+                <span className="">
+                  <ModelStatus status={modelStatus} />
+                </span>
+              </li>
 
-          <ul className="pt-4 mt-4 space-y-2 font-medium border-t border-gray-200 dark:border-gray-700">
-            <li>
-            </li>
-            <li className='text-center'>
-              <GradientBtn text={"Generate a Report"} />
-            </li>
-          </ul>
-          {/* The very end of the side bar would contain settings like a button for theme (dark/white), a button for settins (gear shape), and lastly a button to sign in and out which willl be disabled */}
-          {/* theme btn */}
-          <div className="absolute bottom-5 left-0 right-0 flex space-x-4 items-center justify-center">
-            <SideBarBtn
-              icon={theme == 'dark' ? <FiSun /> : <FiMoon />}
-              onClick={toggleTheme}
-            />
-            <SideBarBtn
-              icon={<FiSettings />}
-              onClick={() => { }}
-            />
-            {/* <SideBarBtn
+              {/* 'findings': {
+        'critical': ['4 vulnerabilities'],
+        'medium': ['11 open ports']
+    }, */}
+              {modelFindings && (
+                <li>
+                  <SideBarItem text={"Findings:  "} />
+                  {Object.keys(modelFindings).map((key, index) => {
+                    return (
+                      <div className="ml-3">
+                        <StatIndicator
+                          key={index}
+                          criticality={key}
+                          text={modelFindings[key][0]}
+                          number={modelFindings[key][1]}
+                        />
+                      </div>
+                    );
+                  })}
+                </li>
+              )}
+              <li>
+                <div className="flex items-center justify-between mr-2">
+                  <SideBarItem
+                    text={"Running commands"}
+                    icon={<HiMiniCommandLine size={24} />}
+                  />
+
+                  {showCommands ? (
+                    <FiEye onClick={() => setShowCommands(false)} />
+                  ) : (
+                    <FiEyeOff onClick={() => setShowCommands(true)} />
+                  )}
+                </div>
+
+                {showCommands && ( //modelCommands &&
+                  <div className="mx-3 p-2 text-xs font-mono bg-gray-200 dark:bg-gray-700 rounded-md max-h-[20rem] overflow-y-auto">
+          
+                    {modelCommands.map((command, _) => {
+                      return <p className="mb-1">{command}</p>;
+                    })}
+                  </div>
+                )}
+              </li>
+            </ul>
+
+            <ul className="pt-4 mt-4 space-y-2 font-medium border-t border-gray-200 dark:border-gray-700">
+              <li></li>
+              <li className="text-center">
+                <GradientBtn text={"Generate a Report"} />
+              </li>
+            </ul>
+            {/* The very end of the side bar would contain settings like a button for theme (dark/white), a button for settins (gear shape), and lastly a button to sign in and out which willl be disabled */}
+            {/* theme btn */}
+            <div className="absolute bottom-5 left-0 right-0 flex space-x-4 items-center justify-center">
+              <SideBarBtn
+                icon={theme == "dark" ? <FiSun /> : <FiMoon />}
+                onClick={toggleTheme}
+              />
+              <SideBarBtn icon={<FiSettings />} onClick={() => {}} />
+              {/* <SideBarBtn
               icon={<FiUser />}
               onClick={() => { }}
               disabled={true}
             /> */}
-
+            </div>
           </div>
-
-        </div>
-      </aside>
-      }
+        </aside>
+      )}
     </div>
-  )
+  );
 }
 
-export default SideBar
-
+export default SideBar;
