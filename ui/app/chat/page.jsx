@@ -8,8 +8,7 @@ import BotChatBubble from "../../components/chat/BotChatBubble";
 import { RemoteRunnable } from "@langchain/core/runnables/remote";
 import { useSearchParams } from "next/navigation";
 import { fetchEventSource } from "@microsoft/fetch-event-source";
-import { useModelContext } from '../../hooks/ModelContext';
-
+import { useModelContext } from "../../hooks/ModelContext";
 
 // const fetcher = url => axios.post(url).then(res => res.data);
 
@@ -48,8 +47,15 @@ export default function Home() {
   const target = searchParams.get("target");
   const task = searchParams.get("task");
 
-  const { modelStatus, setModelStatus, modelSummary, setModelSummary } = useModelContext();
-
+  const {
+    modelStatus,
+    setModelStatus,
+    modelSummary,
+    setModelSummary,
+    setModelFindings,
+    modelCommands,
+    setModelCommands,
+  } = useModelContext();
 
   // TODO: set model status as a context
 
@@ -72,13 +78,26 @@ export default function Home() {
           `Received content: ${obj.messages[obj.messages.length - 1].content}`
         ); // for debugging purposes
         const Model_status = obj.current_step || obj.agent;
-        setModelStatus(Model_status == '__end__' ? 'Done' : Model_status);
+        setModelStatus(Model_status == "__end__" ? "Done" : Model_status);
+
         // TODO:
         // setModelSummary();
 
+        // get the findings from the model
+        const findings = obj.findings;
+        if (findings) {
+          // TODO: reset the findings? or append new findings? or update changed findings?
+          setModelFindings(findings);
+        }
 
-        if (obj.agent == 'tools_node') {
-          obj.agent = 'pentester';
+        // get the command that are running
+        const runningCommand = obj.command;
+        if (runningCommand) {
+          setModelCommands([runningCommand]);
+        }
+
+        if (obj.agent == "tools_node") {
+          obj.agent = "pentester";
         }
         setMessages((prev) => [...prev, obj]);
       },
@@ -95,7 +114,7 @@ export default function Home() {
     }
   }, [target, task]);
 
-  useEffect(() => { }, [tempMessages]);
+  useEffect(() => {}, [tempMessages]);
 
   // const handleSubmit = async (message) => {
   //   if (!message) {
@@ -149,7 +168,10 @@ export default function Home() {
                 </UserChatBubble>
               ) : (
                 // message here is actually the entire object, sorry for the confusion but no time :)
-                <BotChatBubble key={`bot-${index}`} bot_name={message.agent || ""}>
+                <BotChatBubble
+                  key={`bot-${index}`}
+                  bot_name={message.agent || ""}
+                >
                   {message.messages[message.messages.length - 1].content}
                 </BotChatBubble>
               )

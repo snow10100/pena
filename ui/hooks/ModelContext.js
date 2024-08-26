@@ -1,12 +1,14 @@
-import React, { createContext, useState, useContext } from 'react';
+import React, { createContext, useState, useContext } from "react";
 
 // Create the context
 const ModelContext = createContext();
 
 // Create a provider component
 export function ModelProvider({ children }) {
-  const [modelStatus, setModelStatus] = useState('idle');
+  const [modelStatus, setModelStatus] = useState("idle");
   const [modelSummary, setModelSummary] = useState([]);
+  const [modelFindings, setModelFindings] = useState([]);
+  const [modelCommands, setModelCommands] = useState([]);
 
   // Value object to be provided to consuming components
   const value = {
@@ -14,16 +16,22 @@ export function ModelProvider({ children }) {
     setModelStatus,
     modelSummary,
     setModelSummary,
+    modelFindings,
+    setModelFindings,
+    modelCommands,
+    setModelCommands,
   };
 
-  return <ModelContext.Provider value={value}>{children}</ModelContext.Provider>;
+  return (
+    <ModelContext.Provider value={value}>{children}</ModelContext.Provider>
+  );
 }
 
 // Custom hook for using the context
 export function useModelContext() {
   const context = useContext(ModelContext);
   if (context === undefined) {
-    throw new Error('useModel must be used within a ModelProvider');
+    throw new Error("useModel must be used within a ModelProvider");
   }
   return context;
 }

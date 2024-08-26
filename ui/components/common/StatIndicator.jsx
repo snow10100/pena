@@ -1,12 +1,13 @@
 const StatIndicator = ({ criticality, text, number = null, className = "" }) => {
   let colorClass;
 
+  // TODO: edit these keys and vaues
   switch (criticality) {
     case 'low':
-      colorClass = 'bg-yellow-50 text-yellow-800';
+      colorClass = 'bg-gray-50 text-gray-800';
       break;
     case 'medium':
-      colorClass = 'dark:bg-[#3A5F8A] bg-blue-100 text-blue-800';
+      colorClass = 'bg-yellow-100 text-yellow-800';
       break;
     case 'high':
       colorClass = 'dark:bg-[#F44336] bg-red-100 text-red-800';
