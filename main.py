@@ -38,13 +38,13 @@ def event_stream(query: str):
     # Sends an event every second with data: "Message {i}"
     initial_state = {
             "messages": [{"role": "user", "content": query}],
-            "findings": {
-                "critical": ['4 vulnerabilities'],
-                "medium": ['11 open ports'],
-                },
-            "command": "nmap -sV -sC -p- -oN metasploitable2_scan.txt 192.168.100.231",
-            "model_status": "scanning",
-            "evaluation": "wow",
+            # "findings": {
+            #     "critical": ['4 vulnerabilities'],
+            #     "medium": ['11 open ports'],
+            #     },
+            # "command": "nmap -sV -sC -p- -oN metasploitable2_scan.txt 192.168.100.231",
+            # "model_status": "scanning",
+            # "evaluation": "wow",
             }
     for chunk in pentest_graph.stream(initial_state, stream_mode="updates"):
         for node_name, node_results in chunk.items():
