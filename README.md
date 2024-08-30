@@ -2,6 +2,13 @@
 
 A multi-agent AI model designed to automate penetration testing
 
+## Screenshots
+Dark theme:
+![WebUI_Dark](images/WebUI.png)
+
+Light theme:
+![WebUI_Light](images/WebUI_Light.png)
+
 ## Model Architecture
 The model utilizes LangGraph and implements the following architecture/workflow:
 
