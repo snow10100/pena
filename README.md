@@ -4,7 +4,7 @@ A multi-agent AI model designed to automate penetration testing
 
 ## Screenshots
 Dark theme:
-![WebUI_Dark](images/WebUI.png)
+![WebUI_Dark](images/WebUI_Dark.png)
 
 Light theme:
 ![WebUI_Light](images/WebUI_Light.png)
