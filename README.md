@@ -2,6 +2,9 @@
 
 A multi-agent AI model designed to automate penetration testing
 
+## Poster
+![Poster](images/BreachSeek%20(2).png)
+
 ## Screenshots
 Dark theme:
 ![WebUI_Dark](images/WebUI_Dark.png)
