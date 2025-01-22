@@ -1,11 +1,11 @@
 rich
 fastapi
 uvicorn
-langgraph
-langchain_core
-langchain_community
-langchain_experimental
-langchain_anthropic
-langserve
+langgraph==0.2.13
+langchain_core==0.2.34
+langchain_community==0.2.12
+langchain_experimental==0.0.64
+langchain_anthropic==0.1.23
+langserve==0.2.2
 python-dotenv
 sse_starlette
